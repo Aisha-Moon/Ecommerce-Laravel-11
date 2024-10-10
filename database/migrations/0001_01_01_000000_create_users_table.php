@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            Schema::create('users', function (Blueprint $table) {
                 $table->id();
                 $table->string('email', 50)->unique();
                 $table->boolean('is_admin')->default(false);
@@ -22,7 +21,7 @@ return new class extends Migration
             });
        
           
-        });
+  
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
