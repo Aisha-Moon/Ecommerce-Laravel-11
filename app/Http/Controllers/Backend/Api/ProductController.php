@@ -86,7 +86,8 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        // Define validation rules
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'short_desc' => 'nullable|string|max:500',
             'price' => 'required|numeric',
@@ -99,15 +100,21 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
         ]);
-
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
         $product = Product::findOrFail($id);
-        
+    
+        // Handle image upload
         if ($request->hasFile('image')) {
             $img = $request->file('image');
             $filename = $img->getClientOriginalName();
             $imagePath = "uploads/products/$filename";
             $img->move(public_path('uploads/products'), $filename);
-
+    
+            // Delete the old image if it exists
             if ($product->image) {
                 $existingImagePath = public_path($product->image);
                 if (file_exists($existingImagePath)) {
@@ -118,26 +125,29 @@ class ProductController extends Controller
                     }
                 }
             }
-
+    
+           
             $product->image = $imagePath;
         }
-
+    
         // Update other fields
         $product->title = $request->input('title');
         $product->short_desc = $request->input('short_desc');
         $product->price = $request->input('price');
         $product->discount = $request->input('discount');
         $product->discount_price = $request->input('discount_price');
-        $product->stock = $request->input('stock', true); 
+        $product->stock = $request->input('stock'); 
         $product->star = $request->input('star');
         $product->remark = $request->input('remark', 'regular'); 
         $product->category_id = $request->input('category_id');
         $product->brand_id = $request->input('brand_id');
-        
+    
+        // Save the updated product
         $product->save();
-
+    
         return ResponseHelper::Out('Product updated successfully.', $product, 200);
     }
+    
 
     public function destroy($id)
     {
