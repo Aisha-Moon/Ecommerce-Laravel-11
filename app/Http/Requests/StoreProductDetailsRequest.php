@@ -7,7 +7,7 @@ class StoreProductDetailsRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; // Set this to true if you want to authorize all users
+        return true; 
     }
 
     public function rules()
