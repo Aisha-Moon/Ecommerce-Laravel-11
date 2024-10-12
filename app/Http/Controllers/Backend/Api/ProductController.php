@@ -14,7 +14,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('brand','category')->get();
         return ResponseHelper::Out('Products retrieved successfully.', $products, 200);
     }
 
@@ -52,12 +52,15 @@ class ProductController extends Controller
     public function show($id)
     {
         try {
-            $product = Product::findOrFail($id);
+            $product = Product::with(['brand', 'category'])->findOrFail($id);
             return ResponseHelper::Out('Product retrieved successfully.', $product, 200);
         } catch (ModelNotFoundException $e) {
             return ResponseHelper::Out('Product not found.', null, 404);
+        } catch (Exception $e) {
+            return ResponseHelper::Out('An error occurred while retrieving the product.', null, 500);
         }
     }
+    
 
     public function update(StoreProductRequest $request, $id)
     {
