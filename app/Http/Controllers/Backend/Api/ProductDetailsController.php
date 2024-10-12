@@ -17,21 +17,24 @@ class ProductDetailsController extends Controller
 {
     public function index()
     {
-        $productDetails = ProductDetails::all();
+        $productDetails = ProductDetails::with(['product.brand', 'product.category'])->get();
+        
         return ResponseHelper::Out('Product details retrieved successfully.', $productDetails, 200);
     }
+    
 
     // Retrieve a specific product detail
     public function show($id)
-    {
-        $productDetail = ProductDetails::find($id);
-        
-        if (!$productDetail) {
-            return ResponseHelper::Out('Product detail not found.', null, 404);
-        }
+{
+    $productDetail = ProductDetails::with('product', 'product.brand', 'product.category')->find($id);
+    
+    if (!$productDetail) {
+        return ResponseHelper::Out('Product detail not found.', null, 404);
+    }
 
-        return ResponseHelper::Out('Product detail retrieved successfully.', $productDetail, 200);
-    }   
+    return ResponseHelper::Out('Product detail retrieved successfully.', $productDetail, 200);
+}
+
     public function store(StoreProductDetailsRequest $request)
     {
         try {
