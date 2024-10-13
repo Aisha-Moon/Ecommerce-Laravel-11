@@ -92,7 +92,7 @@ class ProductController extends Controller
             $product->discount_price = $request->input('discount_price');
             $product->stock = $request->input('stock'); 
             $product->star = $request->input('star');
-            $product->remark = $request->input('remark', 'regular'); 
+            $product->remark = $request->input('remark'); 
             $product->category_id = $request->input('category_id');
             $product->brand_id = $request->input('brand_id');
 

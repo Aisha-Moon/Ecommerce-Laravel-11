@@ -15,7 +15,6 @@ class ProductDetails extends Model
         'img3',
         'img4',
         'des',
-        'description',
         'color',
         'size',
         'product_id',

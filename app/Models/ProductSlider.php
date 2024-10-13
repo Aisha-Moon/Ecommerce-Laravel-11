@@ -11,10 +11,9 @@ class ProductSlider extends Model
     use HasFactory;
     protected $fillable = [
         'title',
-        'short_description',
+        'short_des',
         'price',
         'image',
-        'active',
         'product_id',
     ];
 
