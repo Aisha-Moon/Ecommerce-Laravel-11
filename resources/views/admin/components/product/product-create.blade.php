@@ -39,7 +39,7 @@
 
                                 <br />
                                 <label class="form-label">Discount </label>
-                                <input id="isDiscountCb" type="checkbox" style="background-color: rgb(0, 110, 255);" onclick="toggleDiscountPriceTab()">
+                                <input id="isDiscountCb" type="checkbox" style="background-color: rgb(0, 110, 255);" onclick="toggleDiscountPrice()">
                                 <br />
 
                                 <div class="d-none" id="discountPriceTab">
@@ -47,11 +47,15 @@
                                     <input class="form-control" id="productDiscountPrice" type="text">
                                 </div>
 
-                                <label class="form-label mt-2">Stock</label>
-                                <input class="form-control" id="productStock" type="text">
+                                <!-- Stock Selection -->
+                                <label class="form-label mt-2">Stock Availability</label>
+                                <select class="form-control form-select" id="productStock">
+                                    <option value="1">Available</option>
+                                    <option value="0">Unavailable</option>
+                                </select>
 
                                 <label class="form-label mt-2">Short Description</label>
-                                <textarea class="form-control" id="productShortDescription" name="" rows="3"></textarea>
+                                <textarea class="form-control" id="productShortDescription" rows="3"></textarea>
 
                                 <br />
                                 <img class="w-15" id="newImg" src="{{ asset('admin/images/default.jpg') }}" />
@@ -74,39 +78,41 @@
 </div>
 
 <script>
+
+    function toggleDiscountPrice()
+    {
+        let isDiscountCb = document.getElementById('isDiscountCb');
+        let discountPriceTab = document.getElementById('discountPriceTab');
+      
+        if (isDiscountCb.checked) {
+            discountPriceTab.classList.remove('d-none'); 
+        } else {
+            discountPriceTab.classList.add('d-none'); 
+        }
+    }
+
     FillCategoryDropDown();
     FillBrandDropDown();
 
-    toggleDiscountPriceTab = () => {
-        let isDiscountCb = document.getElementById('isDiscountCb');
-        let discountPriceTab = document.getElementById('discountPriceTab');
-        if (isDiscountCb.checked) {
-            discountPriceTab.classList.remove('d-none');;
-        } else {
-            discountPriceTab.classList.add('d-none');
-        }
-    }
     async function FillCategoryDropDown() {
-        let res = await axios.get("/api/categories")
+        let res = await axios.get("/api/categories");
         res = res.data.data;
-        res.forEach(function(item, i) {
-            let option = `<option value="${item['id']}">${item['name']}</option>`
+        res.forEach(function(item) {
+            let option = `<option value="${item['id']}">${item['name']}</option>`;
             $("#productCategory").append(option);
-        })
+        });
     }
 
     async function FillBrandDropDown() {
-        let res = await axios.get("/api/brands")
+        let res = await axios.get("/api/brands");
         res = res.data.data;
-        res.forEach(function(item, i) {
-            let option = `<option value="${item['id']}">${item['name']}</option>`
+        res.forEach(function(item) {
+            let option = `<option value="${item['id']}">${item['name']}</option>`;
             $("#productBrand").append(option);
-        })
+        });
     }
 
-
     async function Save() {
-
         let category_id = document.getElementById('productCategory').value;
         let brand_id = document.getElementById('productBrand').value;
         let remark = document.getElementById('productRemark').value;
@@ -114,7 +120,7 @@
         let is_discount = document.getElementById('isDiscountCb');
         let discount_price = document.getElementById('productDiscountPrice').value;
         let price = document.getElementById('productPrice').value;
-        let stock = document.getElementById('productStock').value;
+        let stock = document.getElementById('productStock').value; 
         let short_des = document.getElementById('productShortDescription').value;
         let image = document.getElementById('productImg').files[0];
 
@@ -142,16 +148,17 @@
             formData.append('image', image);
             formData.append('title', title);
             formData.append('price', price);
-            formData.append('stock', stock);
+            formData.append('stock', stock); 
             formData.append('category_id', category_id);
             formData.append('brand_id', brand_id);
             formData.append('remark', remark);
             formData.append('short_des', short_des);
-            formData.append('is_discount', is_discount.checked ? 1 : 0);
-            formData.append('in_stock', 1);
             formData.append('star', 0);
             if (is_discount.checked) {
-                formData.append('discount_price', discount_price);
+            formData.append('discount', 1);
+            formData.append('discount_price', discount_price);
+            } else {
+                formData.append('discount', 0);
             }
 
             const config = {
@@ -161,16 +168,16 @@
             }
 
             showLoader();
-            let res = await axios.post("/api/products", formData, config)
+            let res = await axios.post("/api/products", formData, config);
             hideLoader();
 
             if (res.status === 201) {
                 successToast(res.data['msg']);
-                $('create-modal').modal('hide');
+                $('#create-modal').modal('hide');
                 document.getElementById("save-form").reset();
                 await getList();
             } else {
-                errorToast(res.data['msg'])
+                errorToast(res.data['msg']);
             }
         }
     }

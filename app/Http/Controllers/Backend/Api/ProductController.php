@@ -31,7 +31,7 @@ class ProductController extends Controller
 
             $product = new Product();
             $product->title = $request->input('title');
-            $product->short_desc = $request->input('short_desc');
+            $product->short_desc = $request->input('short_des');
             $product->price = $request->input('price');
             $product->discount = $request->input('discount');
             $product->discount_price = $request->input('discount_price');

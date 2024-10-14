@@ -86,81 +86,51 @@
             $("#deleteProductId").val(id);
             $("#deleteDetailId").val(detail);
         })
-        // Event listener for the Add/Edit Details button
-        $('.addDetailsBtn').on('click', async function() {
-            let productId = $(this).data('id'); // Get product ID from data attribute
-            $("#productIdField").val(productId); // Set the product ID in the hidden field
+     // Event listener for the Add Details button
+$('.addDetailsBtn').on('click', async function() {
+    let productId = $(this).data('id'); // Get product ID from data attribute
+    $("#productIdField").val(productId); // Set the product ID in the hidden field
 
-            try {
-                // Fetch existing product details
-                let response = await axios.get(`/api/productDetails/${productId}`);
-               
+    try {
+        // Fetch existing product details
+        let response = await axios.get(`/api/productDetails/${productId}`);
 
-                if (response.data && response.data.data) {
-                    // Populate the form with existing data if it exists
-                    $("#description").val(response.data.data.des || '');
-                    $("#color").val(response.data.data.color || '');
-                    $("#size").val(response.data.data.size || '');
-                    $("#productDetailsIdField").val(response.data.data.id || ''); // Set the hidden input for product details ID
-                    if (response.data.data.img1) {
-                        $("#existingImage1").attr("src", '{{ config('app.url') }}/' + response.data.data.img1).show();
-                    } else {
-                        $("#existingImage1").hide();
-                    }
+        if (response.data && response.data.data) {
+            // Call FillUpDetailsForm to populate the form with existing data
+            await FillUpDetailsForm(response.data.data);
+            $("#addDetailsLabel").text('Edit Product Details');
+        } else {
+            // Prepare the modal for new entry
+            $("#description").val('');
+            $("#color").val('');
+            $("#size").val('');
+            $("#productDetailsIdField").val(''); 
 
-                    if (response.data.data.img2) {
-                        $("#existingImage2").attr("src", '{{ config('app.url') }}/' + response.data.data.img2).show();
-                    } else {
-                        $("#existingImage2").hide();
-                    }
+            // Hide existing images
+            $("#existingImage1").hide();
+            $("#existingImage2").hide();
+            $("#existingImage3").hide();
+            $("#existingImage4").hide();
 
-                    if (response.data.data.img3) {
-                        $("#existingImage3").attr("src", '{{ config('app.url') }}/' + response.data.data.img3).show();
-                    } else {
-                        $("#existingImage3").hide();
-                    }
+            $("#addDetailsLabel").text('Add Product Details');
+        }
 
-                    if (response.data.data.img4) {
-                        $("#existingImage4").attr("src", '{{ config('app.url') }}/' + response.data.data.img4).show();
-                    } else {
-                        $("#existingImage4").hide();
-                    }
+        // Show the modal
+        $("#addDetailsModal").modal('show');
+    } catch (error) {
+        // Handle error when fetching product details
+        console.error('Error fetching product details:', error);
+        // Prepare the modal for new entry
+        $("#description").val('');
+        $("#color").val('');
+        $("#size").val('');
+        $("#productDetailsIdField").val(''); // Ensure this is cleared for new entry
+        $("#addDetailsLabel").text('Add Product Details');
 
-
-                    $("#addDetailsLabel").text('Edit Product Details');
-                } else {
-                    // Prepare the modal for new entry
-                    $("#description").val('');
-                    $("#color").val('');
-                    $("#size").val('');
-                    $("#productDetailsIdField").val(''); // Clear the hidden field for new entry
-
-                    // Hide existing images
-                    $("#existingImage1").hide();
-                    $("#existingImage2").hide();
-                    $("#existingImage3").hide();
-                    $("#existingImage4").hide();
-
-                    $("#addDetailsLabel").text('Add Product Details');
-                }
-
-                // Show the modal
-                $("#addDetailsModal").modal('show');
-            } catch (error) {
-                // Handle the case when the product details do not exist
-                console.error('Error fetching product details:', error);
-                // Prepare the modal for new entry
-                $("#description").val('');
-                $("#color").val('');
-                $("#size").val('');
-                $("#productDetailsIdField").val(''); // Ensure this is cleared for new entry
-                $("#addDetailsLabel").text('Add Product Details');
-
-                // Show the modal
-                $("#addDetailsModal").modal('show');
-            }
-        });
-
+        // Show the modal
+        $("#addDetailsModal").modal('show');
+    }
+});
 
 
         new DataTable('#tableData', {
