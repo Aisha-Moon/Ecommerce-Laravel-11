@@ -25,17 +25,17 @@
         showLoader();
 
         if (detailId) {
-            await axios.delete(`/api/admin/product-details/${detailId}`)
+          await axios.delete(`/api/productDetails/${detailId}`)
         }
 
-        let res = await axios.delete(`/api/admin/products/${productId}`).catch(err => {
+        let res = await axios.delete(`/api/products/${productId}`).catch(err => {
             hideLoader();
             errorToast("Invoice exist for this product!")
         })
 
         hideLoader();
-        if (res.data['success'] === true) {
-            successToast("Request completed")
+        if (res.status==200) {
+            successToast(res.data.msg)
             await getList();
         } else {
             errorToast("Request fail!")

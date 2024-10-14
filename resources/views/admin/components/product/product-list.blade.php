@@ -79,58 +79,73 @@
             $("#update-modal").modal('show');
         })
 
-        $('.deleteBtn').on('click', function() {
-            let id = $(this).data('id');
+        $('.deleteBtn').on('click', async function() {
+            let productId = $(this).data('id');
             let detail = $(this).data('detail');
+
+            // Show the delete modal
             $("#delete-modal").modal('show');
-            $("#deleteProductId").val(id);
-            $("#deleteDetailId").val(detail);
-        })
-     // Event listener for the Add Details button
-$('.addDetailsBtn').on('click', async function() {
-    let productId = $(this).data('id'); // Get product ID from data attribute
-    $("#productIdField").val(productId); // Set the product ID in the hidden field
 
-    try {
-        // Fetch existing product details
-        let response = await axios.get(`/api/productDetails/${productId}`);
+            // Set the product ID in the modal input
+            $("#deleteProductId").val(productId);
 
-        if (response.data && response.data.data) {
-            // Call FillUpDetailsForm to populate the form with existing data
-            await FillUpDetailsForm(response.data.data);
-            $("#addDetailsLabel").text('Edit Product Details');
-        } else {
-            // Prepare the modal for new entry
-            $("#description").val('');
-            $("#color").val('');
-            $("#size").val('');
-            $("#productDetailsIdField").val(''); 
+            // Make an API call to get product details
+            try {
+                let response = await axios.get(`/api/productDetails/${productId}`);
+                let detailsId = response.data.data.id;
 
-            // Hide existing images
-            $("#existingImage1").hide();
-            $("#existingImage2").hide();
-            $("#existingImage3").hide();
-            $("#existingImage4").hide();
+                // Set the details ID in the modal input
+                $("#deleteDetailId").val(detailsId);
+            } catch (error) {
+                console.error('Error fetching product details:', error);
+            }
+        });
 
-            $("#addDetailsLabel").text('Add Product Details');
-        }
+        // Event listener for the Add Details button
+        $('.addDetailsBtn').on('click', async function() {
+            let productId = $(this).data('id'); // Get product ID from data attribute
+            $("#productIdField").val(productId); // Set the product ID in the hidden field
 
-        // Show the modal
-        $("#addDetailsModal").modal('show');
-    } catch (error) {
-        // Handle error when fetching product details
-        console.error('Error fetching product details:', error);
-        // Prepare the modal for new entry
-        $("#description").val('');
-        $("#color").val('');
-        $("#size").val('');
-        $("#productDetailsIdField").val(''); // Ensure this is cleared for new entry
-        $("#addDetailsLabel").text('Add Product Details');
+            try {
+                // Fetch existing product details
+                let response = await axios.get(`/api/productDetails/${productId}`);
 
-        // Show the modal
-        $("#addDetailsModal").modal('show');
-    }
-});
+                if (response.data && response.data.data) {
+                    // Call FillUpDetailsForm to populate the form with existing data
+                    await FillUpDetailsForm(response.data.data);
+                    $("#addDetailsLabel").text('Edit Product Details');
+                } else {
+                    // Prepare the modal for new entry
+                    $("#description").val('');
+                    $("#color").val('');
+                    $("#size").val('');
+                    $("#productDetailsIdField").val('');
+
+                    // Hide existing images
+                    $("#existingImage1").hide();
+                    $("#existingImage2").hide();
+                    $("#existingImage3").hide();
+                    $("#existingImage4").hide();
+
+                    $("#addDetailsLabel").text('Add Product Details');
+                }
+
+                // Show the modal
+                $("#addDetailsModal").modal('show');
+            } catch (error) {
+                // Handle error when fetching product details
+                console.error('Error fetching product details:', error);
+                // Prepare the modal for new entry
+                $("#description").val('');
+                $("#color").val('');
+                $("#size").val('');
+                $("#productDetailsIdField").val(''); // Ensure this is cleared for new entry
+                $("#addDetailsLabel").text('Add Product Details');
+
+                // Show the modal
+                $("#addDetailsModal").modal('show');
+            }
+        });
 
 
         new DataTable('#tableData', {

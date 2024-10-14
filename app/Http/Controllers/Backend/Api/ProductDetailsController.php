@@ -175,4 +175,6 @@ class ProductDetailsController extends Controller
 
         return ResponseHelper::Out('Product detail deleted successfully.', null, 200);
     }
+
+    
 }
