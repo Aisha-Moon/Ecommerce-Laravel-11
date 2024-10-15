@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\Api\PolicyController;
 use App\Http\Controllers\Backend\Api\BrandController;
 use App\Http\Controllers\Backend\Api\ProductController;
 use App\Http\Controllers\Backend\Api\CategoryController;
@@ -15,5 +16,6 @@ Route::apiResource('products', ProductController::class);
 Route::apiResource('productDetails', ProductDetailsController::class);
 Route::apiResource('productReviews', ProductReviewController::class);
 Route::apiResource('productSliders', ProductSliderController::class);
+Route::apiResource('policies', PolicyController::class);
 
 
