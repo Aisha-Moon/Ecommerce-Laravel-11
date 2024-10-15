@@ -46,7 +46,10 @@
                                 </div>
 
                                 <label class="form-label mt-2">Stock</label>
-                                <input class="form-control" id="productStockUpdate" type="text">
+                                <select class="form-select" id="productStockUpdate">
+                                    <option value="1">Available</option>
+                                    <option value="0">Out Of Stock</option>
+                                </select>
 
                                 <label class="form-label mt-2">Star</label>
                                 <input class="form-control" id="productStarUpdate" type="text">
@@ -135,6 +138,12 @@
         document.getElementById('productTitleUpdate').value = res['title'];
         document.getElementById('productPriceUpdate').value = res['price'];
         document.getElementById('productStockUpdate').value = res['stock'];
+        const stockValue = res['stock'];
+
+        // Set the selected value based on stock status
+        const stockDropdown = document.getElementById('productStockUpdate');
+        stockDropdown.value = stockValue ? "1" : "0"; // Update dropdown selection
+
         document.getElementById('productStarUpdate').value = res['star'];
         document.getElementById('productShortDescriptionUpdate').value = res['short_desc'];
         document.getElementById('oldImg').src = '{{ config('app.url') }}/' + res['image'];
@@ -150,86 +159,85 @@
     }
 
     async function update() {
-    let category_id = document.getElementById('productCategoryUpdate').value;
-    let brand_id = document.getElementById('productBrandUpdate').value;
-    let remark = document.getElementById('productRemarkUpdate').value;
-    let title = document.getElementById('productTitleUpdate').value;
-    let is_discount = document.getElementById('isDiscountCbUpdate');
-    let discount_price = document.getElementById('productDiscountPriceUpdate').value;
-    let price = document.getElementById('productPriceUpdate').value;
-    let stock = document.getElementById('productStockUpdate').value;
-    let star = document.getElementById('productStarUpdate').value;
-    let short_des = document.getElementById('productShortDescriptionUpdate').value;
-    let image = document.getElementById('productImgUpdate').files[0];
+        let category_id = document.getElementById('productCategoryUpdate').value;
+        let brand_id = document.getElementById('productBrandUpdate').value;
+        let remark = document.getElementById('productRemarkUpdate').value;
+        let title = document.getElementById('productTitleUpdate').value;
+        let is_discount = document.getElementById('isDiscountCbUpdate');
+        let discount_price = document.getElementById('productDiscountPriceUpdate').value;
+        let price = document.getElementById('productPriceUpdate').value;
+        let stock = document.getElementById('productStockUpdate').value;
+        let star = document.getElementById('productStarUpdate').value;
+        let short_des = document.getElementById('productShortDescriptionUpdate').value;
+        let image = document.getElementById('productImgUpdate').files[0];
 
-    let product_id = document.getElementById('updateID').value;
+        let product_id = document.getElementById('updateID').value;
 
-    // Form Validation
-    if (category_id.length === 0) {
-        errorToast("Product Category Required!");
-    } else if (brand_id.length === 0) {
-        errorToast("Product Brand Required!");
-    } else if (remark.length === 0) {
-        errorToast("Product Remark Required!");
-    } else if (title.length === 0) {
-        errorToast("Product Title Required!");
-    } else if (price.length === 0) {
-        errorToast("Product Price Required!");
-    } else if (short_des.length === 0) {
-        errorToast("Product Short Description Required!");
-    } else if (is_discount.checked && discount_price.length === 0) {
-        errorToast("Discount Price Required!");
-    } else {
-        let formData = new FormData();
-
-        // Append only fields that are present or changed
-        if (category_id) formData.append('category_id', category_id);
-        if (brand_id) formData.append('brand_id', brand_id);
-        if (remark) formData.append('remark', remark);
-        if (title) formData.append('title', title);
-        if (price) formData.append('price', price);
-        if (stock) formData.append('stock', stock);
-        if (star) formData.append('star', star);
-        if (short_des) formData.append('short_desc', short_des);
-        if (is_discount.checked) {
-            formData.append('discount', 1);
-            formData.append('discount_price', discount_price);
+        // Form Validation
+        if (category_id.length === 0) {
+            errorToast("Product Category Required!");
+        } else if (brand_id.length === 0) {
+            errorToast("Product Brand Required!");
+        } else if (remark.length === 0) {
+            errorToast("Product Remark Required!");
+        } else if (title.length === 0) {
+            errorToast("Product Title Required!");
+        } else if (price.length === 0) {
+            errorToast("Product Price Required!");
+        } else if (short_des.length === 0) {
+            errorToast("Product Short Description Required!");
+        } else if (is_discount.checked && discount_price.length === 0) {
+            errorToast("Discount Price Required!");
         } else {
-            formData.append('discount', 0);
-        }
+            let formData = new FormData();
 
-        // Handle image if changed
-        if (image) {
-            formData.append('image', image);
-        }
-
-        formData.append('_method', 'PUT');  // Indicate the method is PUT for update
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        };
-
-        showLoader();
-        try {
-            let res = await axios.post(`/api/products/${product_id}`, formData, config);
-            hideLoader();
-
-            if (res.status === 200) {
-                successToast(res.data['msg']);
-                await getList(); // Refresh product list
-                $("#update-modal").modal('hide');
-                document.getElementById("update-form").reset();
-                document.getElementById('update-modal-close').click();
+            // Append only fields that are present or changed
+            if (category_id) formData.append('category_id', category_id);
+            if (brand_id) formData.append('brand_id', brand_id);
+            if (remark) formData.append('remark', remark);
+            if (title) formData.append('title', title);
+            if (price) formData.append('price', price);
+            if (stock) formData.append('stock', stock);
+            if (star) formData.append('star', star);
+            if (short_des) formData.append('short_desc', short_des);
+            if (is_discount.checked) {
+                formData.append('discount', 1);
+                formData.append('discount_price', discount_price);
             } else {
-                errorToast(res.data['msg']);
+                formData.append('discount', 0);
             }
-        } catch (error) {
-            hideLoader();
-            errorToast('Failed to update product. Please try again.');
+
+            // Handle image if changed
+            if (image) {
+                formData.append('image', image);
+            }
+
+            formData.append('_method', 'PUT'); // Indicate the method is PUT for update
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            };
+
+            showLoader();
+            try {
+                let res = await axios.post(`/api/products/${product_id}`, formData, config);
+                hideLoader();
+
+                if (res.status === 200) {
+                    successToast(res.data['msg']);
+                    await getList(); // Refresh product list
+                    $("#update-modal").modal('hide');
+                    document.getElementById("update-form").reset();
+                    document.getElementById('update-modal-close').click();
+                } else {
+                    errorToast(res.data['msg']);
+                }
+            } catch (error) {
+                hideLoader();
+                errorToast('Failed to update product. Please try again.');
+            }
         }
     }
-}
-
 </script>

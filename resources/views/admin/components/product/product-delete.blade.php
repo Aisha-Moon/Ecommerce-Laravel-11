@@ -19,6 +19,7 @@
 
 <script>
     async function itemDelete() {
+        
         let productId = document.getElementById('deleteProductId').value;
         let detailId = document.getElementById('deleteDetailId').value;
         document.getElementById('delete-modal-close').click();

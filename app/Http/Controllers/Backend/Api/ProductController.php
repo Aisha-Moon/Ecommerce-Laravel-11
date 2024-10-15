@@ -14,9 +14,11 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('brand','category')->get();
+        $products = Product::with(['brand', 'category', 'details'])->get(); 
+    
         return ResponseHelper::Out('Products retrieved successfully.', $products, 200);
     }
+    
 
     public function store(StoreProductRequest $request) 
     {
@@ -31,7 +33,7 @@ class ProductController extends Controller
 
             $product = new Product();
             $product->title = $request->input('title');
-            $product->short_desc = $request->input('short_des');
+            $product->short_desc = $request->input('short_desc');
             $product->price = $request->input('price');
             $product->discount = $request->input('discount');
             $product->discount_price = $request->input('discount_price');
@@ -110,21 +112,44 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
+            // Find the product by ID
             $product = Product::findOrFail($id);
-            
+    
+            $detail = $product->details; 
+    
+            if ($detail) {
+                // Loop through each image field and delete if it exists
+                $imageFields = ['img1', 'img2', 'img3', 'img4'];
+                foreach ($imageFields as $imageField) {
+                    if ($detail->$imageField) {
+                        $imagePath = public_path($detail->$imageField);
+                        if (file_exists($imagePath)) {
+                            unlink($imagePath);
+                        }
+                    }
+                }
+                // Delete the product detail
+                $detail->delete();
+            }
+    
+            // If the product has an image, delete it
             if ($product->image) {
                 $imagePath = public_path($product->image);
                 if (file_exists($imagePath)) {
                     unlink($imagePath);
                 }
             }
-
+    
+            // Finally, delete the product
             $product->delete();
-            return ResponseHelper::Out('Product deleted successfully.', null, 200);
+    
+            return ResponseHelper::Out('Product and its details deleted successfully.', null, 200);
         } catch (ModelNotFoundException $e) {
             return ResponseHelper::Out('Product not found.', null, 404);
         } catch (Exception $e) {
             return ResponseHelper::Out('Failed to delete product: ' . $e->getMessage(), null, 500);
         }
     }
+    
+    
 }

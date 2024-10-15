@@ -51,7 +51,7 @@
                                 <label class="form-label mt-2">Stock Availability</label>
                                 <select class="form-control form-select" id="productStock">
                                     <option value="1">Available</option>
-                                    <option value="0">Unavailable</option>
+                                    <option value="0">Out Of Stock</option>
                                 </select>
 
                                 <label class="form-label mt-2">Short Description</label>
@@ -152,7 +152,7 @@
             formData.append('category_id', category_id);
             formData.append('brand_id', brand_id);
             formData.append('remark', remark);
-            formData.append('short_des', short_des);
+            formData.append('short_desc', short_des);
             formData.append('star', 0);
             if (is_discount.checked) {
             formData.append('discount', 1);

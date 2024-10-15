@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ProductDetails;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -23,15 +24,20 @@ class Product extends Model
         'brand_id',
     ];
 
-    
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-   
     public function brand()
     {
         return $this->belongsTo(Brand::class);
     }
+
+    // Define the relationship with ProductDetail
+    public function details()
+    {
+        return $this->hasOne(ProductDetails::class); // Use hasOne for a one-to-one relationship
+    }
+    
 }

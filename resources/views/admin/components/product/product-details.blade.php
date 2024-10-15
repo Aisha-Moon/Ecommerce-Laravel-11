@@ -98,6 +98,8 @@ async function FillUpDetailsForm(details) {
 // Form submission without remove image functionality
 async function saveDetails() {
     const productDetailsId = document.getElementById('productDetailsIdField').value;
+    console.log(productDetailsId);
+    
     const des = document.getElementById('description').value;
     const color = document.getElementById('color').value;
     const size = document.getElementById('size').value;
@@ -159,9 +161,15 @@ async function saveDetails() {
             console.log(response);
         }
 
-        if (response.status === 200 || response.status === 201) {
-            successToast('Product details saved successfully');
+        if (response.status === 200 ) {
+            successToast('Product details updated successfully');
             $('#addDetailsModal').modal('hide');
+            await  getList();
+        }else if(response.status === 201){
+            successToast('Product details created successfully');
+            $('#addDetailsModal').modal('hide');
+           await getList();
+
         } else {
             errorToast('Failed to save product details');
         }
