@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Api;
 
 use Exception;
+use ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\ProductSlider;
 use App\Helper\ResponseHelper;
@@ -48,9 +49,9 @@ class ProductSliderController extends Controller
         try {
             $productSlider = ProductSlider::with('product:id,title')->findOrFail($id);
             return ResponseHelper::Out('Product slider retrieved successfully.', $productSlider, 200);
-        } catch (\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return ResponseHelper::Out('Product slider not found.', null, 404);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Error retrieving product slider: ' . $e->getMessage());
             return ResponseHelper::Out('Error retrieving product slider.', null, 500);
         }
@@ -72,9 +73,9 @@ class ProductSliderController extends Controller
             $productSlider->update($request->validated());
 
             return ResponseHelper::Out('Product slider updated successfully.', $productSlider, 200);
-        } catch (\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return ResponseHelper::Out('Product slider not found.', null, 404);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Error updating product slider: ' . $e->getMessage());
             return ResponseHelper::Out('Error updating product slider.', null, 500);
         }
@@ -86,9 +87,9 @@ class ProductSliderController extends Controller
             $productSlider = ProductSlider::findOrFail($id);
             $productSlider->delete();
             return ResponseHelper::Out('Product slider deleted successfully.', null, 200);
-        } catch (\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             return ResponseHelper::Out('Product slider not found.', null, 404);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Error deleting product slider: ' . $e->getMessage());
             return ResponseHelper::Out('Error deleting product slider.', null, 500);
         }
