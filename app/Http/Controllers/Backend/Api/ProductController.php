@@ -7,37 +7,42 @@ use App\Models\Product;
 use App\Helper\ResponseHelper; 
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
 use App\Http\Requests\StoreProductRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use Illuminate\Http\Request;
 class ProductController extends Controller
 {
-    public function index(Request $request)
-    {
-        // Initialize the query
-        $query = Product::with(['brand', 'category', 'details']);
-    
-        // Apply category filter if category_id is present
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->category_id);
+  
+
+ 
+        public function index(Request $request)
+        {
+            // Initialize the query
+            $query = Product::with(['brand', 'category', 'details']);
+        
+            // Apply category filter if category_id is present
+            if ($request->has('category_id')) {
+                $query->where('category_id', $request->category_id);
+            }
+        
+            // Apply brand filter if brand_id is present
+            if ($request->has('brand_id')) {
+                $query->where('brand_id', $request->brand_id);
+            }
+        
+            // Apply remark filter if remark is present
+            if ($request->has('remark')) {
+                $query->where('remark', $request->remark);
+            }
+        
+            // Execute the query and get the products
+            $products = $query->get();
+        
+            return ResponseHelper::Out('Products retrieved successfully.', $products, 200);
         }
     
-        // Apply brand filter if brand_id is present
-        if ($request->has('brand_id')) {
-            $query->where('brand_id', $request->brand_id);
-        }
     
-        // Apply remark filter if remark is present
-        if ($request->has('remark')) {
-            $query->where('remark', $request->remark);
-        }
     
-        // Execute the query and get the products
-        $products = $query->get();
-    
-        return ResponseHelper::Out('Products retrieved successfully.', $products, 200);
-    }
     
     
 

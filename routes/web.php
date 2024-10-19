@@ -1,10 +1,11 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerifyMiddleware;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\FrontendController;
 use App\Http\Controllers\Backend\Api\PolicyController;
+use App\Http\Controllers\Backend\Api\InvoiceController;
 use App\Http\Controllers\Backend\Api\WishlistController;
 use App\Http\Controllers\Backend\Api\CustomerProfileController;
 
@@ -17,7 +18,6 @@ Route::group(['prefix' => 'admin'], function () {
 
 // User Auth
 
-
 //customer profile 
 
 Route::middleware([TokenVerifyMiddleware::class])->group(function () {
@@ -29,4 +29,9 @@ Route::middleware([TokenVerifyMiddleware::class])->group(function () {
 
 });
 
-// Product Wish
+//payment
+Route::post("/paymentSuccess",[InvoiceController::class,'PaymentSuccess']);
+Route::post("/paymentCancel",[InvoiceController::class,'PaymentCancel']);
+Route::post("/paymentFail",[InvoiceController::class,'PaymentFail']);
+
+Route::get("/homePage",[HomeController::class,'home']);

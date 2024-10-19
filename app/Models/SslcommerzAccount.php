@@ -9,14 +9,5 @@ class SslcommerzAccount extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'store_id',
-        'store_passwd',
-        'currency',
-        'success_url',
-        'fail_url',
-        'cancel_url',
-        'ipn_url',
-        'init_url',
-    ];
+    protected $fillable = ['init_url', 'store_id', 'store_passwd', 'currency', 'success_url', 'fail_url', 'cancel_url', 'ipn_url'];
 }

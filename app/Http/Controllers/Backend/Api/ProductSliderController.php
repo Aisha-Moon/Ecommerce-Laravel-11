@@ -25,24 +25,35 @@ class ProductSliderController extends Controller
         }
     }
 
-    public function store(StoreProductSliderRequest $request)
+    public function store(StoreProductSliderRequest $request, $id = null)
     {
         try {
-            // Store uploaded image
+            // Handle image upload
+            $imagePath = null;
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $filename = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('uploads/product_sliders'), $filename);
+                $imagePath = $filename;
             }
-
-            $productSlider = ProductSlider::create(array_merge($request->validated(), ['image' => $filename]));
-
-            return ResponseHelper::Out('Product slider created successfully.', $productSlider, 201);
-        } catch (\Exception $e) {
-            Log::error('Error creating product slider: ' . $e->getMessage());
-            return ResponseHelper::Out('Error creating product slider.', null, 500);
+    
+            // If an ID is provided, update the existing record; otherwise, create a new one
+            if ($id) {
+                $productSlider = ProductSlider::findOrFail($id);
+                $productSlider->update(array_merge($request->validated(), ['image' => $imagePath ?? $productSlider->image]));
+                $message = 'Product slider updated successfully.';
+            } else {
+                $productSlider = ProductSlider::create(array_merge($request->validated(), ['image' => $imagePath]));
+                $message = 'Product slider created successfully.';
+            }
+    
+            return ResponseHelper::Out($message, $productSlider, $id ? 200 : 201);
+        } catch (Exception $e) {
+            Log::error('Error in product slider operation: ' . $e->getMessage());
+            return ResponseHelper::Out('Error processing product slider.', null, 500);
         }
     }
+    
 
     public function show($id)
     {

@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerifyMiddleware;
 use App\Http\Controllers\Backend\Api\BrandController;
 use App\Http\Controllers\Backend\Api\PolicyController;
+use App\Http\Controllers\Backend\Api\InvoiceController;
 use App\Http\Controllers\Backend\Api\ProductController;
 use App\Http\Controllers\Backend\Api\CategoryController;
 use App\Http\Controllers\Backend\Api\WishlistController;
@@ -43,3 +44,14 @@ Route::post('/CreateCartList', [ProductCartController::class, 'CreateCartList'])
 Route::get('/CartList', [ProductCartController::class, 'CartList']);
 Route::get('/DeleteCartList/{product_id}', [ProductCartController::class, 'DeleteCartList']);
 });
+
+
+// Invoice and payment\
+Route::middleware([TokenVerifyMiddleware::class])->group(function () {
+
+Route::get("/InvoiceCreate",[InvoiceController::class,'InvoiceCreate']);
+Route::get("/InvoiceList",[InvoiceController::class,'InvoiceList']);
+Route::get("/InvoiceProductList/{invoice_id}",[InvoiceController::class,'InvoiceProductList']);
+
+});
+Route::post("/PaymentIPN",[InvoiceController::class,'PaymentIPN']);

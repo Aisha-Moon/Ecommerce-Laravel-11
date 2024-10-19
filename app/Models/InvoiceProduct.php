@@ -14,6 +14,7 @@ class InvoiceProduct extends Model
         'price',
         'product_id',
         'invoice_id',
+        'customer_id'
     ];
 
     public function product(): BelongsTo
