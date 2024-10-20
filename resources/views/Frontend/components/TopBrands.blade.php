@@ -19,9 +19,9 @@
  </div>
  
  <script>
-     TopCategory();
  
-     async function TopCategory() {
+
+     async function TopBrand() {
          let res = await axios.get('api/brands');
  
          $('#TopBrandItem').empty();
@@ -30,7 +30,7 @@
              let eachItem = ` <div class="p-2 col-2">
                  <div class="item">
                      <div class="categories_box">
-                         <a href="">
+                         <a href="by-brands?id=${element.id}">
                              <img src="${element.image}" alt="cat_img1"/>
                              <span>${element.name}</span>
                          </a>

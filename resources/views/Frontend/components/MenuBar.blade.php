@@ -61,15 +61,18 @@
 </header>
 
 <script>
-    Category();
+  
 
     async function Category() {
         let res = await axios.get('api/categories');
 
         $('#CategoryItem').empty();
         let categories = res.data.data;
+       
+       
+        
         categories.forEach((element) => {
-            let eachItem = `<li><a class="dropdown-item nav-link nav_item" href="">${element.name}</a></li>`;
+            let eachItem = `<li><a class="dropdown-item nav-link nav_item" href="by-category?id=${element.id}">${element.name}</a></li>`;
             $("#CategoryItem").append(eachItem);
         });
 

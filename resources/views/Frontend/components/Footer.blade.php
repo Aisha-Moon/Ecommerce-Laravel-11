@@ -5,7 +5,7 @@
                  <div class="col-lg-3 col-md-6 col-sm-12">
                      <div class="widget">
                          <div class="footer_logo">
-                             <a href="#"><img src="assets/images/logo_light.png" alt="logo"/></a>
+                             <a href="#"><img src="frontend/images/logo_light.png" alt="logo"/></a>
                          </div>
                          <p>If you are going to use of Lorem Ipsum need to be sure there isn't hidden of text</p>
                      </div>
@@ -80,11 +80,11 @@
                  </div>
                  <div class="col-md-6">
                      <ul class="footer_payment text-center text-lg-end">
-                         <li><a href="#"><img src="assets/images/visa.png" alt="visa"></a></li>
-                         <li><a href="#"><img src="assets/images/discover.png" alt="discover"></a></li>
-                         <li><a href="#"><img src="assets/images/master_card.png" alt="master_card"></a></li>
-                         <li><a href="#"><img src="assets/images/paypal.png" alt="paypal"></a></li>
-                         <li><a href="#"><img src="assets/images/amarican_express.png" alt="amarican_express"></a></li>
+                         <li><a href="#"><img src="frontend/images/visa.png" alt="visa"></a></li>
+                         <li><a href="#"><img src="frontend/images/discover.png" alt="discover"></a></li>
+                         <li><a href="#"><img src="frontend/images/master_card.png" alt="master_card"></a></li>
+                         <li><a href="#"><img src="frontend/images/paypal.png" alt="paypal"></a></li>
+                         <li><a href="#"><img src="frontend/images/amarican_express.png" alt="amarican_express"></a></li>
                      </ul>
                  </div>
              </div>
