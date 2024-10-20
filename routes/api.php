@@ -34,16 +34,15 @@ Route::middleware([TokenVerifyMiddleware::class])->group(function () {
 Route::get('/ProductWishList', [WishlistController::class, 'ProductWishList']);
 Route::get('/CreateWishList/{product_id}', [WishlistController::class, 'CreateWishList']);
 Route::get('/RemoveWishList/{product_id}', [WishlistController::class, 'RemoveWishList']);
+ // Product Cart
+
+ Route::post('/CreateCartList', [ProductCartController::class, 'CreateCartList']);
+ Route::get('/CartList', [ProductCartController::class, 'CartList']);
+ Route::get('/DeleteCartList/{product_id}', [ProductCartController::class, 'DeleteCartList']);
+ 
  });
 
  
- // Product Cart
- Route::middleware([TokenVerifyMiddleware::class])->group(function () {
-
-Route::post('/CreateCartList', [ProductCartController::class, 'CreateCartList']);
-Route::get('/CartList', [ProductCartController::class, 'CartList']);
-Route::get('/DeleteCartList/{product_id}', [ProductCartController::class, 'DeleteCartList']);
-});
 
 
 // Invoice and payment\

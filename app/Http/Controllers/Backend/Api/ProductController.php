@@ -177,8 +177,5 @@ class ProductController extends Controller
         }
     }
     
-    public function ListProductByRemark(Request $request){
-        $data=Product::where('remark',$request->remark)->with('brand','category')->get();
-        return ResponseHelper::Out('success',$data,200);
-    }
+  
 }

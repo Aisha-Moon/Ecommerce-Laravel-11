@@ -34,7 +34,7 @@
                             <div class="banner_content overflow-hidden">
                                 <h5 class="mb-3 staggered-animation font-weight-light" data-animation="slideInLeft" data-animation-delay="0.5s">${element.price}</h5>
                                 <h2 class="staggered-animation" data-animation="slideInLeft" data-animation-delay="1s">${element.title}</h2>
-                                <a class="btn btn-fill-out rounded-0 staggered-animation text-uppercase" href="" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>
+                                <a class="btn btn-fill-out rounded-0 staggered-animation text-uppercase" href="/details?id=${element.product_id}" data-animation="slideInLeft" data-animation-delay="1.5s">Shop Now</a>
                             </div>
                         </div>
                     </div>

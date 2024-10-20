@@ -71,7 +71,9 @@
                             </a>
                         </div>
                         <div class="product_info">
-                            <h6 class="product_title">${product.title}</h6>
+    
+    
+                            <h6 class="product_title"> <a href="/details?id=${product.id}">  ${product.title} </a></h6>
                             <div class="product_price">$ ${product.price}</div>
                         </div>
                     </div>
