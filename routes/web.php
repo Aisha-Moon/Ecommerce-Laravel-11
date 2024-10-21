@@ -47,6 +47,11 @@ Route::get('/policy', [PolicyController::class, 'PolicyPage']);
 Route::get('/details', [ProductController::class, 'Details']);
 
 
+Route::get('/wish', [ProductController::class, 'WishList']);
+Route::get('/cart', [ProductController::class, 'CartListPage']);
+
+
+
 Route::get('/ListProductByRemark/{remark}', [ProductController::class, 'ListProductByRemark']);
 Route::get('/ListProductByCategory/{id}', [CategoryController::class, 'ListProductByCategory']);
 Route::get('/ListProductByBrand/{id}', [BrandController::class, 'ListProductByBrand']);

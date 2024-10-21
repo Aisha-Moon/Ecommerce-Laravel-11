@@ -188,11 +188,12 @@
             let p_qty = document.getElementById('p_qty').value;
 
             if (p_size.length === 0) {
-                alert("Product Size Required !");
+                errorToast("Product Size Required !");
+               
             } else if (p_color.length === 0) {
-                alert("Product Color Required !");
+                errorToast("Product Color Required !");
             } else if (p_qty === 0) {
-                alert("Product Qty Required !");
+                errorToast("Product Qty Required !");
             } else {
                 $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
                 let res = await axios.post("/api/CreateCartList", {
@@ -203,7 +204,7 @@
                 });
                 $(".preloader").delay(90).fadeOut(100).addClass('loaded');
                 if (res.status === 200) {
-                    alert("Request Successful")
+                    successToast("Request Successful")
                 }
             }
 
@@ -219,29 +220,54 @@
     async function AddToWishList() {
         try {
             $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
-            let res = await axios.get("/api/CreateWishList/" + id);
-            console.log(res.data);
+
+              let res = await axios.get("/api/CreateWishList/" + id);
+           
+          
             
             $(".preloader").delay(90).fadeOut(100).addClass('loaded');
             if (res.status === 200) {
-                alert("Request Successful")
+               successToast("Request Successful")
             }
         } catch (e) {
             if (e.response.status === 401) {
                 sessionStorage.setItem("last_location", window.location.href)
-                window.location.href = "/login"
+                window.location.href = "/login";
+                errorToast('You need to log in first');
             }
         }
     }
+//     async function AddToWishList() {
+//     try {
+//         $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
+
+//         let res = await axios.get("/api/CreateWishList/" + id);
+//         console.log(res.status);
+
+//         $(".preloader").delay(90).fadeOut(100).addClass('loaded');
+//         if (res.status === 200) {
+//             successToast("Request Successful");  // Fixed spelling to 'successToast'
+//         }
+//     } catch (e) {
+//         if (e.response && e.response.status === 401) {
+//             // Handle unauthorized error
+//             errorToast('You need to log in first');
+//         } else {
+//             // Handle other errors
+//             errorToast('An error occurred');
+//         }
+//     }
+// }
+
 
 
     async function AddReview() {
         let reviewText = document.getElementById('reviewTextID').value;
         let reviewScore = document.getElementById('reviewScore').value;
         if (reviewScore.length === 0) {
-            alert("Score Required !")
+            errorToast("Score Required !")
         } else if (reviewText.length === 0) {
-            alert("Review Required !")
+            errorToast("Review Required !")
         } else {
             $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
             let postBody = {

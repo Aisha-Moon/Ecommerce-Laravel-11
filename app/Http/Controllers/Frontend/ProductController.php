@@ -12,7 +12,14 @@ use App\Http\Controllers\Controller;
 class ProductController extends Controller
 {
 
-
+    public function WishList()
+    {
+        return view('frontend.pages.wish-list-page');
+    }
+    public function CartListPage()
+    {
+        return view('frontend.pages.cart-list-page');
+    }
 
 public function Details()
     {
