@@ -44,7 +44,7 @@
         showLoader();
         let res = await axios.get("/api/products");
 
-        console.log(res);
+    
 
         hideLoader();
 

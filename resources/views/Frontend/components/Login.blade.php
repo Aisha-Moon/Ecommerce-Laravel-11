@@ -29,7 +29,7 @@
             alert("Email Required!");
         } else {
             $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
-            let res=await axios.get("api/UserLogin/"+email);
+            let res=await axios.get("UserLogin/"+email);
             if(res.status===200){
                 sessionStorage.setItem('email',email);
                 window.location.href="/verify"

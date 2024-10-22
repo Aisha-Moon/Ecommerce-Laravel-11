@@ -40,11 +40,13 @@ class UserController extends Controller
 
             // Create JWT token with user role
             $token = JWTToken::CreateToken($verification->email, $verification->id, $role);
-
+       
+            
 
             // Return the token in a cookie
-             return ResponseHelper::Out('success', $token, 200)->cookie('token', $token, 60);
-        } else {
+            return response()->json(['token' => $token])->cookie('token', $token, 60, null, null, false, false);
+
+                } else {
             return ResponseHelper::Out('fail', null, 401);
         }
     }

@@ -30,7 +30,7 @@
             alert("Code Required!");
         } else {
             $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
-            let res=await axios.get("api/VerifyLogin/"+email+"/"+code);
+            let res=await axios.get("VerifyLogin/"+email+"/"+code);
             if(res.status===200){
                     if(sessionStorage.getItem("last_location")){
                         window.location.href=sessionStorage.getItem("last_location")

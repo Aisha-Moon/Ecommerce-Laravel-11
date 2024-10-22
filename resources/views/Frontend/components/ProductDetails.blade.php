@@ -152,7 +152,7 @@
     async function productReview() {
         let res = await axios.get("/ListReviewByProduct/" + id);
         let Details = await res.data['data'];
-
+        console.log(Details);
         // Check if there are any reviews
         if (Details.length === 0) {
             // Hide the review section if no reviews are found
@@ -223,7 +223,8 @@
 
               let res = await axios.get("/api/CreateWishList/" + id);
            
-          
+             console.log(res);
+             
             
             $(".preloader").delay(90).fadeOut(100).addClass('loaded');
             if (res.status === 200) {

@@ -22,21 +22,25 @@ class JWTToken
         return JWT::encode($payload, $key, 'HS256');
     }
     
-
     public static function ReadToken($token)
     {
         try {
-            if($token == null){
+            if (is_null($token)) {
+                Log::info('Token is null');
                 return 'unauthorized';
-            } else {
-                $key = env('JWT_KEY');
-                return JWT::decode($token, new Key($key, 'HS256'));
             }
+    
+            $key = env('JWT_KEY');
+            
+            // Log the token before decoding for debugging
+            Log::info('Token to decode:', ['token' => $token]);
+    
+            return JWT::decode($token, new Key($key, 'HS256'));
         } catch (Exception $e) {
-            // Log or print the exception message for debugging
             Log::error('JWT Decode Error: ' . $e->getMessage());
             return 'unauthorized';
         }
     }
+    
     
 }

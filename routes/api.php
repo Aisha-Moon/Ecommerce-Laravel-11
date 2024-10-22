@@ -25,9 +25,11 @@ Route::apiResource('productReviews', ProductReviewController::class)->middleware
 Route::apiResource('productSliders', ProductSliderController::class);
 Route::apiResource('policies', PolicyController::class);
 
+
 Route::get('/UserLogin/{UserEmail}', [UserController::class, 'UserLogin']);
 Route::get('/VerifyLogin/{UserEmail}/{OTP}', [UserController::class, 'VerifyLogin']);
 Route::get('/logout',[UserController::class,'UserLogout']);
+
 
 Route::middleware([TokenVerifyMiddleware::class])->group(function () {
 // Product Wish
@@ -42,7 +44,6 @@ Route::get('/RemoveWishList/{product_id}', [WishlistController::class, 'RemoveWi
  
  });
 
- 
 
 
 // Invoice and payment\

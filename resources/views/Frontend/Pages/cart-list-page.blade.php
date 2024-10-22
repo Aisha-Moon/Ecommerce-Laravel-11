@@ -1,6 +1,7 @@
 @extends('frontend.layout.app')
 @section('content')
     @include('frontend.components.MenuBar')
+    @include('frontend.components.PaymentMethodList')
     @include('frontend.components.CartList')
     @include('frontend.components.TopBrands')
     @include('frontend.components.Footer')

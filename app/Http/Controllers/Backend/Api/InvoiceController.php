@@ -111,8 +111,8 @@ class InvoiceController extends Controller
 
     function PaymentSuccess(Request $request){
         SSLCommerz::InitiateSuccess($request->query('tran_id'));
-        // return redirect('/profile');
-        return 1;
+        return redirect('/profile');
+       
     }
 
 
@@ -122,7 +122,7 @@ class InvoiceController extends Controller
     }
 
     function PaymentFail(Request $request){
-        return SSLCommerz::InitiateFail($request->query('tran_id'));
+         SSLCommerz::InitiateFail($request->query('tran_id'));
         return redirect('/profile');
     }
 

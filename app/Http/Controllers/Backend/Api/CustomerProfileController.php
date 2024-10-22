@@ -12,10 +12,7 @@ class CustomerProfileController extends Controller
     
 
     // Display the profile page
-    public function ProfilePage()
-    {
-        return view('pages.profile-page');
-    }
+  
 
     // Create or update a customer profile
     public function CreateProfile(Request $request)

@@ -14,6 +14,31 @@
                     <div class="text-md-end text-center">
                         <ul class="header_list">
                             <li><a href="/policy?type=about">About</a></li>
+
+                            @if (Cookie::get('token') !== null)
+                           
+                            <li><a href="{{ url('/profile') }}"><i class="linearicons-user"></i> Account </a> </li>
+                            <li> <a href="{{ url('/logout') }}"><i class="linearicons-exit"></i> Logout</a></li>
+
+                            @else
+                            <li>
+                                <a href="{{ url('/login') }}">
+                                    <i class="linearicons-login"></i> Login
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/register') }}">
+                                    <i class="linearicons-pencil"></i> Register
+                                </a>
+                            </li>
+                            @endif
+                            {{-- @if (Cookie::get('token') !== null)
+                                <li><a href="{{ url('/profile') }}"> <i class="linearicons-user"></i> Account</a></li>
+                                <li><a class="btn btn-danger btn-sm" href="{{ url('/logout') }}"> Logout</a></li>
+                            @else
+                                <li><a class="btn btn-danger btn-sm" href="{{ url('/login') }}">Login</a></li>
+                            @endif --}}
+
                         </ul>
                     </div>
                 </div>
@@ -61,16 +86,14 @@
 </header>
 
 <script>
-  
-
     async function Category() {
         let res = await axios.get('api/categories');
 
         $('#CategoryItem').empty();
         let categories = res.data.data;
-       
-       
-        
+
+
+
         categories.forEach((element) => {
             let eachItem = `<li><a class="dropdown-item nav-link nav_item" href="by-category?id=${element.id}">${element.name}</a></li>`;
             $("#CategoryItem").append(eachItem);

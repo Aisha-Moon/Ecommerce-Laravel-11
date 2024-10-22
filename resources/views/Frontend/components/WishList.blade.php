@@ -28,9 +28,17 @@
  
  <script>
      async function WishList(){
-         let res=await axios.get(`api/ProductWishList`);
+        try {
+            let res=await axios.get(`api/ProductWishList`);
+        } catch (error) {
+            if(error.response && error.response.status == 401){
+                window.location.href = '/login';
+            }
+        }
          $("#byList").empty();
-         res.data['data'].forEach((item,i)=>{
+         console.log(res.data);
+         
+         res.data.data.forEach((item,i)=>{
              let EachItem=`<div class="col-lg-3 col-md-4 col-6">
                                  <div class="product">
                                      <div class="product_img">
