@@ -7,12 +7,12 @@
                         <div class="heading_s1">
                             <h3>Login</h3>
                         </div>
-                            <div class="form-group mb-3">
-                                <input id="email" type="text" required="" class="form-control" name="email" placeholder="Your Email">
-                            </div>
-                            <div class="form-group mb-3">
-                                <button onclick="Login()" type="submit" class="btn btn-fill-out btn-block" name="login">Next</button>
-                            </div>
+                        <div class="form-group mb-3">
+                            <input class="form-control" id="email" name="email" type="text" required="" placeholder="Your Email">
+                        </div>
+                        <div class="form-group mb-3">
+                            <button class="btn btn-fill-out btn-block" name="login" type="submit" onclick="Login()">Next</button>
+                        </div>
 
                     </div>
                 </div>
@@ -21,7 +21,6 @@
     </div>
 </div>
 
-
 <script>
     async function Login() {
         let email = document.getElementById('email').value;
@@ -29,12 +28,11 @@
             alert("Email Required!");
         } else {
             $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
-            let res=await axios.get("UserLogin/"+email);
-            if(res.status===200){
-                sessionStorage.setItem('email',email);
-                window.location.href="/verify"
-            }
-            else{
+            let res = await axios.get("api/UserLogin/" + email);
+            if (res.status === 200) {
+                sessionStorage.setItem('email', email);
+                window.location.href = "/verify"
+            } else {
                 $(".preloader").delay(90).fadeOut(100).addClass('loaded');
                 alert("Something Went Wrong");
             }
