@@ -76,22 +76,33 @@
             <i class="bi bi-graph-up"></i>
             <span class="side-bar-item-caption">Dashboard</span>
         </a>
-
+    
         <a class="side-bar-item" href="{{ route('web.admin.brand') }}">
             <i class="bi bi-list-nested"></i>
             <span class="side-bar-item-caption">Brand</span>
         </a>
-
+    
         <a class="side-bar-item" href="{{ route('web.admin.category') }}">
             <i class="bi bi-list-nested"></i>
             <span class="side-bar-item-caption">Category</span>
         </a>
-
+    
         <a class="side-bar-item" href="{{ route('web.admin.product') }}">
             <i class="bi bi-bag"></i>
             <span class="side-bar-item-caption">Product</span>
         </a>
+        <a class="side-bar-item" href="{{ route('web.admin.profile') }}">
+            <i class="bi bi-user"></i>
+            <span class="side-bar-item-caption">Admin Profile</span>
+        </a>
+        <a class="side-bar-item" onclick="logout()">
+            <span class="side-bar-item-caption">Logout</span>
+        </a>
+    
+      
+    
     </div>
+    
 
     <div class="content" id="contentRef">
         @yield('content')

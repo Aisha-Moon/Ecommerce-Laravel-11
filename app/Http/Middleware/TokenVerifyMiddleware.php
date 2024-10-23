@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use App\Helper\JWTToken;
@@ -15,13 +14,8 @@ class TokenVerifyMiddleware
         // Get the token from the cookie
         $token = $request->cookie('token');
     
-        // Log the token before decoding
-        Log::info('Token to decode: ' . $token);
-    
         // Decode the token
         $result = JWTToken::ReadToken($token);
-    
-        Log::info('JWT Decode Result:', (array) $result);
     
         if ($result === 'unauthorized') {
             return response()->json(['message' => 'unauthorized'], 401);
@@ -31,6 +25,14 @@ class TokenVerifyMiddleware
         $request->headers->set('email', $result->userEmail);
         $request->headers->set('id', $result->userID);
         $request->headers->set('role', $result->role);
+    
+        // Store role in session
+        session(['role' => $result->role]);
+    
+        // Check if the route requires admin access and user is not an admin
+        if ($request->is('admin/*') && $result->role !== 'admin') {
+            return response()->json(['message' => 'Access denied: Admins only'], 403);
+        }
     
         return $next($request);
     }

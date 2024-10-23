@@ -30,26 +30,31 @@ class UserController extends Controller
     public function VerifyLogin($UserEmail, $OTP)
     {
         $verification = User::where('email', $UserEmail)->where('otp', $OTP)->first();
-
+    
         if ($verification) {
-
             User::where('email', $UserEmail)->where('otp', $OTP)->update(['otp' => '0']);
-
+    
             // Determine the role based on 'is_admin' field
-            $role = $verification->is_admin == 1 ? 'admin' : 'user';  // Assuming 'is_admin' defines the role
-
+            $role = $verification->is_admin == 1 ? 'admin' : 'user';
+    
+            // Set role in session
+            session(['role' => $role]);
+    
             // Create JWT token with user role
             $token = JWTToken::CreateToken($verification->email, $verification->id, $role);
-       
-            
-
-            // Return the token in a cookie
-            return response()->json(['token' => $token])->cookie('token', $token, 60, null, null, false, false);
-
-                } else {
+    
+            // Prepare the response with the token and redirect URL
+            $redirectUrl = $verification->is_admin == 1 ? '/admin/dashboard' : '/';
+    
+            // Return the token in a cookie with redirect information
+            return response()->json(['token' => $token, 'redirect' => $redirectUrl])
+                             ->cookie('token', $token, 60, null, null, false, false);
+        } else {
             return ResponseHelper::Out('fail', null, 401);
         }
     }
+    
+    
 
 
 

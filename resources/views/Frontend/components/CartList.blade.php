@@ -58,9 +58,20 @@
 
 <script>
     async function CartList() {
-        let res = await axios.get("api/CartList");
-        let cart = res.data.data;
+      
+let res;
+        try {
+            res = await axios.get("api/CartList");
+        } catch (error) {
+            if(error.response && error.response.status == 401){
+                window.location.href = '/login';
+                return;
 
+            }
+        }
+        if (res && res.data) {
+
+        let cart = res.data.data;
         $("#byList").empty();
 
         cart.forEach((item, i) => {
@@ -80,6 +91,7 @@
              RemoveCartList(id);
         })
     }
+}
     async function CartTotal(cart) {
         let Total = 0;
         cart.forEach((item, i) => {

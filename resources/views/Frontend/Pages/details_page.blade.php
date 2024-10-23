@@ -7,6 +7,7 @@
     @include('frontend.components.Footer')
   <script>
       (async () => {
+        await Category();
         await productDetails();
         await productReview();
             $(".preloader").delay(90).fadeOut(100).addClass('loaded');

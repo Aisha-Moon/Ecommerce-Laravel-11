@@ -123,7 +123,7 @@ async function OrderListRequest() {
    async function InvoiceProductList(id) {
 
        $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
-       let res= await axios.get("/InvoiceProductList/"+id);
+       let res= await axios.get("api/InvoiceProductList/"+id);
        $("#InvoiceProductModal").modal('show');
        $(".preloader").delay(90).fadeOut(100).addClass('loaded');
 
@@ -134,8 +134,8 @@ async function OrderListRequest() {
        res.data.forEach((item,i)=>{
            let rows=`<tr>
                        <td>${item['product']['title']}</td>
-                        <td>${item['qty']}</td>
-                       <td>$ ${item['sale_price']}</td>
+                        <td>${item['quantity']}</td>
+                       <td>$ ${item['price']}</td>
                    </tr>`
            $("#productList").append(rows);
        });

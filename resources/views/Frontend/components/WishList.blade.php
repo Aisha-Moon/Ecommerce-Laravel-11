@@ -27,56 +27,61 @@
  </div>
  
  <script>
-     async function WishList(){
-        try {
-            let res=await axios.get(`api/ProductWishList`);
-        } catch (error) {
-            if(error.response && error.response.status == 401){
-                window.location.href = '/login';
-            }
+    async function WishList() {
+    let res; 
+    try {
+        res = await axios.get(`api/ProductWishList`);
+    } catch (error) {
+        if (error.response && error.response.status == 401) {
+            window.location.href = '/login';
+            return;
         }
-         $("#byList").empty();
-         console.log(res.data);
-         
-         res.data.data.forEach((item,i)=>{
-             let EachItem=`<div class="col-lg-3 col-md-4 col-6">
-                                 <div class="product">
-                                     <div class="product_img">
-                                         <a href="#">
-                                             <img src="${item['product']['image']}" alt="product_img9">
-                                         </a>
-                                         <div class="product_action_box">
-                                             <ul class="list_none pr_action_btn">
-                                                 <li><a href="/details?id=${item['product']['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
-                                             </ul>
-                                         </div>
-                                     </div>
-                                     <div class="product_info">
-                                         <h6 class="product_title"><a href="/details?id=${item['product']['id']}">${item['product']['title']}</a></h6>
-                                         <div class="product_price">
-                                             <span class="price">$ ${item['product']['price']}</span>
-                                         </div>
-                                         <div class="rating_wrap">
-                                             <div class="rating">
-                                                 <div class="product_rate" style="width:${item['product']['star']}%"></div>
-                                             </div>
-                                         </div>
-                                         <button class="btn remove btn-sm my-2 btn-danger" data-id="${item['product']['id']}">Remove</button>
- 
-                                     </div>
-                                 </div>
-                             </div>`
-             $("#byList").append(EachItem);
-         })
- 
- 
-         $(".remove").on('click',function () {
-             let id= $(this).data('id');
-             RemoveWishList(id);
-         })
- 
- 
-     }
+    }
+    
+    // Clear the wishlist container
+    $("#byList").empty();
+    
+    if (res && res.data) {
+
+        // Iterate over the product wishlist data
+        res.data.data.forEach((item, i) => {
+            let EachItem = `<div class="col-lg-3 col-md-4 col-6">
+                                <div class="product">
+                                    <div class="product_img">
+                                        <a href="#">
+                                            <img src="${item['product']['image']}" alt="product_img9">
+                                        </a>
+                                        <div class="product_action_box">
+                                            <ul class="list_none pr_action_btn">
+                                                <li><a href="/details?id=${item['product']['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product_info">
+                                        <h6 class="product_title"><a href="/details?id=${item['product']['id']}">${item['product']['title']}</a></h6>
+                                        <div class="product_price">
+                                            <span class="price">$ ${item['product']['price']}</span>
+                                        </div>
+                                        <div class="rating_wrap">
+                                            <div class="rating">
+                                                <div class="product_rate" style="width:${item['product']['star']}%"></div>
+                                            </div>
+                                        </div>
+                                        <button class="btn remove btn-sm my-2 btn-danger" data-id="${item['product']['id']}">Remove</button>
+                                    </div>
+                                </div>
+                            </div>`;
+            $("#byList").append(EachItem);
+        });
+
+        // Attach click event for removing items from wishlist
+        $(".remove").on('click', function () {
+            let id = $(this).data('id');
+            RemoveWishList(id);
+        });
+    }
+}
+
  
    async function RemoveWishList(id){
        $(".preloader").delay(90).fadeIn(100).removeClass('loaded');

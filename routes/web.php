@@ -15,14 +15,17 @@ use App\Http\Controllers\Backend\Api\InvoiceController;
 use App\Http\Controllers\Backend\Api\WishlistController;
 use App\Http\Controllers\Backend\Api\CustomerProfileController;
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => [TokenVerifyMiddleware::class]], function () {
     Route::get('/dashboard', [FrontendController::class, 'dashboardPage'])->name('web.admin.dashboard');
     Route::get('/product', [FrontendController::class, 'productPage'])->name('web.admin.product');
     Route::get('/category', [FrontendController::class, 'categoryPage'])->name('web.admin.category');
     Route::get('/brand', [FrontendController::class, 'brandPage'])->name('web.admin.brand');
+    Route::get('/profile', [FrontendController::class, 'profilePage'])->name('web.admin.profile');
 });
 
-// User Auth
+
+Route::get('/admin_profile', [FrontendController::class, 'getProfileDetails'])->middleware([TokenVerifyMiddleware::class]);
+
 
 //customer profile 
 

@@ -16,22 +16,25 @@
                             <li><a href="/policy?type=about">About</a></li>
 
                             @if (Cookie::get('token') !== null)
-                           
-                            <li><a href="{{ url('/profile') }}"><i class="linearicons-user"></i> Account </a> </li>
-                            <li> <a href="{{ url('/logout') }}"><i class="linearicons-exit"></i> Logout</a></li>
-
+                            @php
+                                $role = session('role');
+                            @endphp
+                        
+                            @if ($role === 'admin')
+                                <li><a href="{{ url('/admin/profile') }}"><i class="linearicons-user"></i> Admin Profile </a></li>
                             @else
+                                <li><a href="{{ url('/profile') }}"><i class="linearicons-user"></i> Account </a></li>
+                            @endif
+                            <li><a href="{{ url('/logout') }}"><i class="linearicons-exit"></i> Logout</a></li>
+                        @else
                             <li>
                                 <a href="{{ url('/login') }}">
                                     <i class="linearicons-login"></i> Login
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ url('/register') }}">
-                                    <i class="linearicons-pencil"></i> Register
-                                </a>
-                            </li>
-                            @endif
+                        @endif
+                        
+                        
                             {{-- @if (Cookie::get('token') !== null)
                                 <li><a href="{{ url('/profile') }}"> <i class="linearicons-user"></i> Account</a></li>
                                 <li><a class="btn btn-danger btn-sm" href="{{ url('/logout') }}"> Logout</a></li>
